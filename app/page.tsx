@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 
 const CalendarWidget = () => {
   const daysInMay = 31;
-  const startDay = 3; // 0 = Sunday
-  const weddingDay = 21;
+  const startDay = 1; // 0 = Sunday
+  const weddingDay = 14;
   const days = [];
 
   for (let i = 0; i < startDay; i++) days.push(null);
@@ -13,7 +13,7 @@ const CalendarWidget = () => {
 
   return (
     <div className="grid grid-cols-7 gap-2 text-center text-xs font-light text-white">
-      {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(day => (
+      {["CN", "T2", "T3", "T4", "T5", "T6", "T7"].map((day) => (
         <div key={day} className="tracking-widest opacity-80">
           {day}
         </div>
@@ -23,16 +23,19 @@ const CalendarWidget = () => {
           key={idx}
           className={`aspect-square flex items-center justify-center text-sm ${
             day === weddingDay
-              ? 'text-white font-semibold relative'
+              ? "text-white font-semibold relative"
               : day
-              ? 'text-white/70'
-              : ''
+              ? "text-white/70"
+              : ""
           }`}
         >
           {day && day !== weddingDay && day}
           {day === weddingDay && (
-            <span className="w-9 h-9 bg-red-500 rounded-full flex items-center justify-center shadow-lg shadow-red-500/40">
-              {day}
+            <span className="relative flex items-center justify-center text-base">
+              <img src="/heart.png" alt="" />
+              <span className="absolute text-black font-semibold text-sm">
+                {day}
+              </span>
             </span>
           )}
         </div>
@@ -41,10 +44,10 @@ const CalendarWidget = () => {
   );
 };
 
-const SongHui = ({ size = 'text-2xl' }: { size?: string }) => {
+const SongHui = ({ size = "text-2xl" }: { size?: string }) => {
   // Sử dụng ảnh chữ 囍 màu đỏ - bạn có thể thay thế URL này bằng ảnh của bạn
   return (
-    <div className={`${size} flex items-center justify-center text-red-600`}>
+    <div className={`${size} flex items-center justify-center text-[#8b1a1a]`}>
       <img
         src="/double-happy.png"
         alt="Double happiness"
@@ -52,9 +55,10 @@ const SongHui = ({ size = 'text-2xl' }: { size?: string }) => {
         onError={(e) => {
           // Fallback: hiển thị chữ 囍 nếu ảnh không load được
           const target = e.target as HTMLImageElement;
-          target.style.display = 'none';
+          target.style.display = "none";
           if (target.parentElement) {
-            target.parentElement.innerHTML = '<span style="font-size: inherit;">囍</span>';
+            target.parentElement.innerHTML =
+              '<span style="font-size: inherit;">囍</span>';
           }
         }}
       />
@@ -71,8 +75,8 @@ const CountdownTimer = () => {
   });
 
   useEffect(() => {
-    const weddingDate = new Date('2025-12-14T12:00:00');
-    
+    const weddingDate = new Date("2025-12-14T12:00:00");
+
     const updateTimer = () => {
       const now = new Date();
       const difference = weddingDate.getTime() - now.getTime();
@@ -80,7 +84,9 @@ const CountdownTimer = () => {
       if (difference > 0) {
         setTimeLeft({
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          hours: Math.floor(
+            (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          ),
           minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((difference % (1000 * 60)) / 1000),
         });
@@ -96,10 +102,10 @@ const CountdownTimer = () => {
   }, []);
 
   const boxes = [
-    { value: timeLeft.days, label: 'ngày' },
-    { value: timeLeft.hours, label: 'giờ' },
-    { value: timeLeft.minutes, label: 'phút' },
-    { value: timeLeft.seconds, label: 'giây' },
+    { value: timeLeft.days, label: "ngày" },
+    { value: timeLeft.hours, label: "giờ" },
+    { value: timeLeft.minutes, label: "phút" },
+    { value: timeLeft.seconds, label: "giây" },
   ];
 
   return (
@@ -108,9 +114,9 @@ const CountdownTimer = () => {
         <div
           key={idx}
           className="flex flex-col items-center justify-center rounded-md bg-[#8b1a1a] px-3 py-4 text-white shadow-md"
-          style={{ minWidth: '60px' }}
+          style={{ minWidth: "60px" }}
         >
-          <span className="text-3xl font-light leading-none">{box.value}</span>
+          <span className="text-2xl font-light leading-none">{box.value}</span>
           <span className="mt-2 text-xs font-light">{box.label}</span>
         </div>
       ))}
@@ -119,7 +125,10 @@ const CountdownTimer = () => {
 };
 
 // Hook for scroll animations
-const useScrollAnimation = (animationType: string = 'fadeIn', delay: number = 0) => {
+const useScrollAnimation = (
+  animationType: string = "fadeIn",
+  delay: number = 0
+) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -135,7 +144,7 @@ const useScrollAnimation = (animationType: string = 'fadeIn', delay: number = 0)
       },
       {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px',
+        rootMargin: "0px 0px -50px 0px",
       }
     );
 
@@ -156,25 +165,34 @@ const useScrollAnimation = (animationType: string = 'fadeIn', delay: number = 0)
 // Scroll Animation Component
 const ScrollAnimation = ({
   children,
-  animation = 'fadeIn',
+  animation = "fadeIn",
   delay = 0,
-  className = '',
+  className = "",
 }: {
   children: React.ReactNode;
-  animation?: 'fadeIn' | 'fadeLeft' | 'fadeRight' | 'fadeUp' | 'fadeDown' | 'zoomIn' | 'slideUp';
+  animation?:
+    | "fadeIn"
+    | "fadeLeft"
+    | "fadeRight"
+    | "fadeUp"
+    | "fadeDown"
+    | "zoomIn"
+    | "slideUp";
   delay?: number;
   className?: string;
 }) => {
   const { ref, isVisible } = useScrollAnimation(animation, delay);
 
   const animationClasses = {
-    fadeIn: isVisible ? 'animate-fade-in' : 'opacity-0',
-    fadeLeft: isVisible ? 'animate-fade-left' : 'opacity-0 translate-x-[-30px]',
-    fadeRight: isVisible ? 'animate-fade-right' : 'opacity-0 translate-x-[30px]',
-    fadeUp: isVisible ? 'animate-fade-up' : 'opacity-0 translate-y-[30px]',
-    fadeDown: isVisible ? 'animate-fade-down' : 'opacity-0 translate-y-[-30px]',
-    zoomIn: isVisible ? 'animate-zoom-in' : 'opacity-0 scale-95',
-    slideUp: isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-[50px]',
+    fadeIn: isVisible ? "animate-fade-in" : "opacity-0",
+    fadeLeft: isVisible ? "animate-fade-left" : "opacity-0 translate-x-[-30px]",
+    fadeRight: isVisible
+      ? "animate-fade-right"
+      : "opacity-0 translate-x-[30px]",
+    fadeUp: isVisible ? "animate-fade-up" : "opacity-0 translate-y-[30px]",
+    fadeDown: isVisible ? "animate-fade-down" : "opacity-0 translate-y-[-30px]",
+    zoomIn: isVisible ? "animate-zoom-in" : "opacity-0 scale-95",
+    slideUp: isVisible ? "animate-slide-up" : "opacity-0 translate-y-[50px]",
   };
 
   return (
@@ -187,10 +205,190 @@ const ScrollAnimation = ({
   );
 };
 
+const RSVPForm = () => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    attending: "yes",
+    guests: "1",
+    message: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    setFormData({
+      name: "",
+      attending: "yes",
+      guests: "1",
+      message: "",
+    });
+    setTimeout(() => setIsSubmitted(false), 3000);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label
+          className="block text-sm text-gray-700 mb-2"
+          style={{ fontFamily: "var(--font-cormorant)" }}
+        >
+          Họ và tên
+        </label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
+          placeholder="Nhập họ tên của bạn"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label
+            className="block text-sm text-gray-700 mb-2"
+            style={{ fontFamily: "var(--font-cormorant)" }}
+          >
+            Bạn sẽ tham dự không?
+          </label>
+          <select
+            name="attending"
+            value={formData.attending}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
+          >
+            <option value="yes">Có, tôi sẽ đến</option>
+            <option value="no">Tiếc là không thể</option>
+            <option value="maybe">Chưa chắc chắn</option>
+          </select>
+        </div>
+
+        <div>
+          <label
+            className="block text-sm text-gray-700 mb-2"
+            style={{ fontFamily: "var(--font-cormorant)" }}
+          >
+            Số lượng khách
+          </label>
+          <select
+            name="guests"
+            value={formData.guests}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
+          >
+            {[1, 2, 3, 4, 5].map((num) => (
+              <option key={num} value={num}>
+                {num} {num === 1 ? "khách" : "khách"}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label
+          className="block text-sm text-gray-700 mb-2"
+          style={{ fontFamily: "var(--font-cormorant)" }}
+        >
+          Lời nhắn (tùy chọn)
+        </label>
+        <textarea
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500 resize-none"
+          rows={4}
+          placeholder="Viết một lời chúc mừng..."
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="w-full py-3 bg-[#8b1a1a] text-white rounded-lg font-semibold transition-colors duration-300"
+        style={{ fontFamily: "var(--font-cormorant)" }}
+      >
+        XÁC NHẬN THAM DỰ
+      </button>
+
+      {isSubmitted && (
+        <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 text-center">
+          ✓ Cảm ơn! Chúng tôi đã nhận được xác nhận của bạn.
+        </div>
+      )}
+    </form>
+  );
+};
+
+const MusicPlayer = () => {
+  const [isPlaying, setIsPlaying] = useState(true);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch(() => {
+          setIsPlaying(false);
+        });
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.loop = true;
+      audioRef.current.play().catch(() => {
+        setIsPlaying(false);
+      });
+    }
+  }, []);
+
+  const toggleMusic = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsPlaying(!isPlaying);
+  };
+  return (
+    <div className="fixed bottom-6 left-6 z-50">
+      <audio ref={audioRef} src="audio.mp3" />
+
+      <button
+        onClick={toggleMusic}
+        className="relative w-14 h-14 bg-[#8b1a1a] rounded-full shadow-lg flex items-center justify-center transition-all duration-300 active:scale-95"
+        title={isPlaying ? "Tắt nhạc" : "Phát nhạc"}
+      >
+        {isPlaying ? (
+          <div
+            className={`text-white text-2xl animate-spin`}
+            style={{ animationDuration: "1.5s" }}
+          >
+            ♪
+          </div>
+        ) : (
+          <div className="text-white text-2xl">♪</div>
+        )}
+      </button>
+    </div>
+  );
+};
+
 export default function WeddingInvitation() {
   return (
-    <main className="min-h-screen bg-[#f3f1ed] py-10 text-gray-900">
+    <main className="min-h-screen bg-[#f3f1ed] text-gray-900 overflow-hidden">
       <div className="mx-auto max-w-[460px] bg-white shadow-2xl">
+        <MusicPlayer />
         {/* COVER */}
         <section className="relative h-[720px] overflow-hidden">
           <img
@@ -201,36 +399,39 @@ export default function WeddingInvitation() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
           <p
             className="absolute top-8 w-full px-6 text-center text-[13px] font-light text-white leading-relaxed tracking-wider"
-            style={{ fontFamily: 'var(--font-cormorant)' }}
+            style={{ fontFamily: "var(--font-cormorant)" }}
           >
             I love three things in this world, Sun, moon and you. <br />
             Sun for morning, moon for night, and you forever.
           </p>
           <h1
             className="absolute inset-x-0 top-1/2 -translate-y-1/2 px-6 text-center text-4xl font-light text-white tracking-[0.2em]"
-            style={{ fontFamily: 'var(--font-playfair)' }}
+            style={{ fontFamily: "var(--font-playfair)" }}
           >
             Welcome to our wedding
           </h1>
           <p
             className="absolute left-8 bottom-32 rotate-[-6deg] text-3xl text-white drop-shadow-lg"
-            style={{ fontFamily: 'var(--font-dancing)' }}
+            style={{ fontFamily: "var(--font-dancing)" }}
           >
             We got married
           </p>
           <div className="absolute bottom-16 inset-x-0 px-6 text-white">
-            <div className="flex items-end justify-between text-[13px]">
+            <div className="flex items-end justify-between text-[20px]">
               <div>
-                <p style={{ fontFamily: 'var(--font-cormorant)' }}>Ai Tien</p>
+                <p style={{ fontFamily: "var(--font-cormorant)" }}>Ái Tiên</p>
                 <p className="tracking-widest text-[11px]">BRIDE</p>
               </div>
               <div className="text-center">
-                <p className="tracking-[0.4em]" style={{ fontFamily: 'var(--font-playfair)' }}>
-                  2025.05.20
+                <p
+                  className="tracking-[0.4em]"
+                  style={{ fontFamily: "var(--font-playfair)" }}
+                >
+                  2025.12.14
                 </p>
               </div>
               <div className="text-right">
-                <p style={{ fontFamily: 'var(--font-cormorant)' }}>Quoc Dien</p>
+                <p style={{ fontFamily: "var(--font-cormorant)" }}>Quốc Điển</p>
                 <p className="tracking-widest text-[11px]">GROOM</p>
               </div>
             </div>
@@ -243,25 +444,35 @@ export default function WeddingInvitation() {
         {/* SECTION 2 */}
         <section className="border-t border-gray-200 bg-white">
           <ScrollAnimation animation="fadeLeft" delay={0}>
-            <div className="flex items-center justify-between px-6 py-4 text-[12px] tracking-[0.4em]" style={{ fontFamily: 'var(--font-cormorant)' }}>
+            <div
+              className="flex items-center justify-between px-6 py-4 text-[12px] tracking-[0.4em]"
+              style={{ fontFamily: "var(--font-cormorant)" }}
+            >
               <span>WEDDING</span>
               <span>INVITATION</span>
               <span>2025</span>
             </div>
           </ScrollAnimation>
-          <div className="relative h-[340px]">
-            <img src="/footer.png" alt="Right love" className="h-full w-full object-cover" />
+          <div className="relative h-[250px]">
+            <img
+              src="/footer.png"
+              alt="Right love"
+              className="h-full w-full object-cover"
+            />
             <div className="absolute inset-0 bg-black/25" />
             <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
               <ScrollAnimation animation="fadeDown" delay={200}>
-                <p className="text-lg tracking-[0.3em]" style={{ fontFamily: 'var(--font-dancing)' }}>
+                <p
+                  className="text-lg"
+                  style={{ fontFamily: "var(--font-dancing)" }}
+                >
                   Right love | Right reason | Right for you
                 </p>
               </ScrollAnimation>
               <ScrollAnimation animation="fadeUp" delay={400}>
                 <p className="mt-4 text-[13px] leading-relaxed font-light">
-                  To Our Family And Friends, Thank You For Celebrating Our Special Day,
-                  Supporting Us And Sharing Our Love.
+                  To Our Family And Friends, Thank You For Celebrating Our
+                  Special Day, Supporting Us And Sharing Our Love.
                 </p>
               </ScrollAnimation>
             </div>
@@ -270,13 +481,25 @@ export default function WeddingInvitation() {
 
         {/* SECTION 3 */}
         <section className="border-t border-gray-200 bg-white px-10 py-14 text-center">
+          <ScrollAnimation animation="fadeDown" delay={200}>
+            <h3
+              className="mt-4 text-2xl tracking-[0.5em]"
+              style={{ fontFamily: "var(--font-cormorant)" }}
+            >
+              OUR LOVE STORY
+            </h3>
+          </ScrollAnimation>
           <ScrollAnimation animation="zoomIn" delay={0}>
             <div className="relative mt-4 shadow-lg">
-              <img src="/footer.png" alt="Love story" className="h-[320px] w-full object-cover" />
+              <img
+                src="/footer.png"
+                alt="Love story"
+                className="h-[320px] w-full object-cover"
+              />
               <ScrollAnimation animation="fadeRight" delay={300}>
                 <p
                   className="pointer-events-none absolute -bottom-6 -right-6 z-10 rotate-[-12deg] text-[52px] leading-none text-[#e6403b] drop-shadow-[0_6px_14px_rgba(0,0,0,0.25)]"
-                  style={{ fontFamily: 'var(--font-dancing)' }}
+                  style={{ fontFamily: "var(--font-dancing)" }}
                 >
                   Sweet
                 </p>
@@ -294,7 +517,7 @@ export default function WeddingInvitation() {
                 />
                 <p
                   className="text-[13px] tracking-[0.6em] text-gray-600"
-                  style={{ fontFamily: 'var(--font-cormorant)' }}
+                  style={{ fontFamily: "var(--font-cormorant)" }}
                 >
                   WEDDING <br /> INVITATION
                 </p>
@@ -310,7 +533,7 @@ export default function WeddingInvitation() {
           <ScrollAnimation animation="fadeIn" delay={400}>
             <div
               className="mx-auto mt-6 max-w-[360px] space-y-2 text-[13px] leading-relaxed text-gray-700"
-              style={{ fontFamily: 'var(--font-cormorant)' }}
+              style={{ fontFamily: "var(--font-cormorant)" }}
             >
               <p>Trước đây cứ nghĩ đám cưới chỉ là một thông báo chính thức.</p>
               <p>Giờ mới hiểu đó là một dịp hiếm hoi để mọi người tụ họp.</p>
@@ -325,23 +548,29 @@ export default function WeddingInvitation() {
         {/* SECTION 4 */}
         <section className="relative border-t border-gray-200 bg-white px-6 py-12">
           {/* Title ở góc trên phải */}
-          <ScrollAnimation animation="fadeDown" delay={0}>
-            <div className="absolute right-6 top-4 z-10 text-right">
-              <p className="text-5xl text-[#e6403b]" style={{ fontFamily: 'var(--font-cormorant)' }}>
+          <div>
+            <div className="absolute right-6 top-4 z-100 text-right">
+              <p
+                className="text-5xl text-[#e6403b]"
+                style={{ fontFamily: "var(--font-cormorant)" }}
+              >
                 OUR
               </p>
-              <p className="text-3xl font-bold text-[#e6403b]" style={{ fontFamily: 'var(--font-cormorant)' }}>
+              <p
+                className="text-3xl font-bold text-[#e6403b]"
+                style={{ fontFamily: "var(--font-cormorant)" }}
+              >
                 LOVE STORY
               </p>
             </div>
-          </ScrollAnimation>
+          </div>
 
           <div>
-            <div className="absolute left-[-80px] top-1/3 z-10">
+            <div className="absolute left-[-50px] top-1/3 z-10">
               <div className="">
                 <p
                   className="rotate-[-90deg] whitespace-nowrap text-[15px] leading-relaxed text-gray-700"
-                  style={{ fontFamily: 'var(--font-dancing)' }}
+                  style={{ fontFamily: "var(--font-dancing)" }}
                 >
                   Love goes with the wind. but never goes away.
                 </p>
@@ -352,7 +581,11 @@ export default function WeddingInvitation() {
           <div className="">
             <ScrollAnimation animation="fadeRight" delay={100}>
               <div className="ml-auto overflow-hidden shadow-lg w-4/5">
-                <img src="/footer.png" alt="Love story main" className="h-[380px] w-full object-cover" />
+                <img
+                  src="/footer.png"
+                  alt="Love story main"
+                  className="h-[380px] w-full object-cover"
+                />
               </div>
             </ScrollAnimation>
 
@@ -360,15 +593,19 @@ export default function WeddingInvitation() {
             <ScrollAnimation animation="fadeUp" delay={300}>
               <div className="relative">
                 <div className="mr-16 overflow-hidden border-12 border-white -mt-12">
-                  <img src="/footer.png" alt="Love story secondary" className="h-[240px] w-full object-cover" />
+                  <img
+                    src="/footer.png"
+                    alt="Love story secondary"
+                    className="h-[240px] w-full object-cover"
+                  />
                 </div>
                 {/* Date dọc bên phải */}
                 <div>
                   <p
-                    className="absolute right-[-20px] top-1/2 -translate-y-1/2 rotate-90 text-[15px] tracking-[0.6em] text-gray-700"
-                    style={{ fontFamily: 'var(--font-playfair)' }}
+                    className="absolute right-[-20px] top-1/2 -translate-y-1/2 rotate-90 text-[20px] tracking-[0.6em] text-gray-700"
+                    style={{ fontFamily: "var(--font-playfair)" }}
                   >
-                    05.20
+                    14.12
                   </p>
                 </div>
               </div>
@@ -386,7 +623,7 @@ export default function WeddingInvitation() {
           <ScrollAnimation animation="fadeDown" delay={200}>
             <h3
               className="mt-4 text-2xl tracking-[0.5em]"
-              style={{ fontFamily: 'var(--font-cormorant)' }}
+              style={{ fontFamily: "var(--font-cormorant)" }}
             >
               FALL IN LOVE
             </h3>
@@ -398,7 +635,10 @@ export default function WeddingInvitation() {
             </p>
           </ScrollAnimation>
           <ScrollAnimation animation="fadeLeft" delay={400}>
-            <div className="mt-8 flex justify-between text-[11px] uppercase tracking-[0.6em] text-gray-600" style={{ fontFamily: 'var(--font-cormorant)' }}>
+            <div
+              className="mt-8 flex justify-between text-[11px] uppercase tracking-[0.6em] text-gray-600"
+              style={{ fontFamily: "var(--font-cormorant)" }}
+            >
               <span>YOU ARE</span>
               <span>MY DEAREST</span>
               <span>LOVE</span>
@@ -406,23 +646,43 @@ export default function WeddingInvitation() {
           </ScrollAnimation>
           <ScrollAnimation animation="zoomIn" delay={500}>
             <div className="mt-8">
-              <img src="/footer.png" alt="Embrace" className="h-[320px] w-full object-cover" />
+              <img
+                src="/footer.png"
+                alt="Embrace"
+                className="h-[320px] w-full object-cover"
+              />
             </div>
           </ScrollAnimation>
           <ScrollAnimation animation="fadeRight" delay={600}>
             <p
-              className="mt-6 text-4xl text-red-600 absolute right-0 bottom-5"
-              style={{ fontFamily: 'var(--font-dancing)' }}
+              className="mt-6 text-4xl text-[#8b1a1a] absolute right-0 -bottom-8"
+              style={{ fontFamily: "var(--font-dancing)" }}
             >
               Love and freedom <br /> you and gentleness
             </p>
+          </ScrollAnimation>
+          <ScrollAnimation animation="fadeIn" delay={400}>
+            <div
+              className="mx-auto mt-12 max-w-[360px] space-y-2 text-[13px] leading-relaxed text-gray-700"
+              style={{ fontFamily: "var(--font-cormorant)" }}
+            >
+              <p>Núi biếc rừng xanh vang vọng tiếng lòng, </p>
+              <p>Giữa thế gian rộng lớn, người chung nhịp vẫn tìm thấy nhau.</p>
+              <p>
+                Tình yêu đến như một lẽ tự nhiên, Và chúng ta nắm tay nhau đi
+                đến trọn đời.
+              </p>
+            </div>
           </ScrollAnimation>
         </section>
 
         {/* SECTION 6 */}
         <section className="border-t border-gray-200 bg-white px-6 py-12">
           <ScrollAnimation animation="fadeLeft" delay={0}>
-            <div className="flex items-center justify-between border-b border-gray-300 pb-4 text-[12px] tracking-[0.4em]" style={{ fontFamily: 'var(--font-cormorant)' }}>
+            <div
+              className="flex items-center justify-between border-b border-gray-300 pb-4 text-[12px] tracking-[0.4em]"
+              style={{ fontFamily: "var(--font-cormorant)" }}
+            >
               <span>LOVE</span>
               <span>WEDDING</span>
               <span>INFORMATION</span>
@@ -430,20 +690,31 @@ export default function WeddingInvitation() {
           </ScrollAnimation>
           <ScrollAnimation animation="zoomIn" delay={200}>
             <div className="mt-8 space-y-2 flex justify-around">
-              <img src="/footer.png" alt="Info 1" className="h-[250px] object-cover" />
-              <img src="/footer.png" alt="Info 2" className="h-[250px] object-cover" />
+              <img
+                src="/footer.png"
+                alt="Info 1"
+                className="h-[250px] object-cover"
+              />
+              <img
+                src="/footer.png"
+                alt="Info 2"
+                className="h-[250px] object-cover"
+              />
             </div>
           </ScrollAnimation>
           <ScrollAnimation animation="fadeIn" delay={300}>
             <p className="mt-8 text-center text-sm leading-relaxed text-gray-600">
-              I love three things in this world, Sun, moon and you. Sun for morning,
-              moon for night, and you forever.
+              I love three things in this world, Sun, moon and you. Sun for
+              morning, moon for night, and you forever.
             </p>
           </ScrollAnimation>
           <ScrollAnimation animation="zoomIn" delay={400}>
             <div className="mt-6 flex flex-col items-center gap-4">
               <SongHui size="text-6xl" />
-              <p className="text-3xl tracking-[0.3em]" style={{ fontFamily: 'var(--font-playfair)' }}>
+              <p
+                className="text-3xl tracking-[0.3em]"
+                style={{ fontFamily: "var(--font-playfair)" }}
+              >
                 YOU ARE PERFECT
               </p>
             </div>
@@ -456,20 +727,23 @@ export default function WeddingInvitation() {
         </section>
 
         {/* SECTION 7 */}
-        <section className="border-t border-gray-200 bg-white px-6 py-12">
-          <ScrollAnimation animation="fadeLeft" delay={0}>
-            <div className="flex items-center justify-between text-[11px] tracking-[0.5em] text-gray-700" style={{ fontFamily: 'var(--font-cormorant)' }}>
-              <span>NO.12</span>
-              <span>05.20</span>
-              <span>FALL IN LOVE</span>
-            </div>
-          </ScrollAnimation>
+        <section className="border-t border-gray-200 bg-white py-12">
           <ScrollAnimation animation="zoomIn" delay={200}>
-            <div className="relative mt-4 h-[420px] overflow-hidden">
-              <img src="/footer.png" alt="Calendar" className="h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-black/35" />
-              <ScrollAnimation animation="fadeUp" delay={400}>
-                <div className="absolute inset-x-8 bottom-10 rounded-3xl bg-white/15 p-6 backdrop-blur">
+            <div className="relative mt-4 h-[500px] overflow-hidden">
+              <img
+                src="/footer.png"
+                alt="Calendar"
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/10" />
+              <div className="absolute top-6 inset-x-6 flex items-center justify-between text-[12px] tracking-[0.5em] text-white pointer-events-none">
+                <span>NO.12</span>
+                <span>12.14</span>
+                <span>FALL IN</span>
+                <span>LOVE</span>
+              </div>
+              <div>
+                <div className="absolute inset-x-8 bottom-10 bg-black/20 p-6">
                   <div className="text-center text-[11px] uppercase tracking-[0.6em] text-white">
                     Wedding Invitation
                   </div>
@@ -477,26 +751,31 @@ export default function WeddingInvitation() {
                     <CalendarWidget />
                   </div>
                 </div>
-              </ScrollAnimation>
+              </div>
             </div>
           </ScrollAnimation>
           <div className="mt-8 space-y-6">
             <ScrollAnimation animation="fadeDown" delay={500}>
               <div className="text-center">
-                <p className="text-sm italic text-gray-700 leading-relaxed" style={{ fontFamily: 'var(--font-cormorant)' }}>
-                  Thứ Bảy, 20.05.2025<br />
-                  Âm lịch 22/4 | 12:00 PM
+                <p
+                  className="text-sm italic text-gray-700 leading-relaxed"
+                  style={{ fontFamily: "var(--font-cormorant)" }}
+                >
+                  Chủ Nhật, 14.12.2025
+                  <br />
+                  Âm lịch 24/10 | 11:00 AM
                 </p>
               </div>
             </ScrollAnimation>
-
             <ScrollAnimation animation="zoomIn" delay={600}>
               <CountdownTimer />
             </ScrollAnimation>
-
             <ScrollAnimation animation="fadeIn" delay={700}>
-              <div className="mt-8 text-left">
-                <div className="space-y-2 text-sm leading-relaxed text-gray-600" style={{ fontFamily: 'var(--font-cormorant)' }}>
+              <div className="mt-8 ml-4 text-left">
+                <div
+                  className="space-y-2 text-sm leading-relaxed text-gray-600"
+                  style={{ fontFamily: "var(--font-cormorant)" }}
+                >
                   <p>Ánh trời bừng sáng, rơi vào chốn nhân gian.</p>
                   <p>Ta vượt ngàn sông núi.</p>
                   <p>Chỉ để cùng em</p>
@@ -512,13 +791,20 @@ export default function WeddingInvitation() {
           <div className="relative animate-fade-up">
             <div className="absolute top-7 h-80 w-full bg-[#e4e8de]" />
             <ScrollAnimation animation="fadeRight" delay={0}>
-              <div className="relative z-10 ml-auto grid grid-cols-2 gap-4 px-6" style={{ maxWidth: '85%' }}>
-                {[1, 2].map(item => (
+              <div
+                className="relative z-10 ml-auto grid grid-cols-2 gap-4 px-6"
+                style={{ maxWidth: "85%" }}
+              >
+                {[1, 2].map((item) => (
                   <div
                     key={item}
                     className="overflow-hidden border border-white/70 shadow-lg shadow-black/10 animate-soft-zoom anim-delay-100"
                   >
-                    <img src="/footer.png" alt={`Collage ${item}`} className="h-48 w-full object-cover" />
+                    <img
+                      src="/footer.png"
+                      alt={`Collage ${item}`}
+                      className="h-48 w-full object-cover"
+                    />
                   </div>
                 ))}
               </div>
@@ -526,9 +812,10 @@ export default function WeddingInvitation() {
             <ScrollAnimation animation="fadeIn" delay={300}>
               <p
                 className="relative z-10 mt-5 ml-5 text-[20px] leading-relaxed text-gray-700"
-                style={{ fontFamily: 'var(--font-dancing)' }}
+                style={{ fontFamily: "var(--font-dancing)" }}
               >
-                As the clouds and mist dissipate<br />
+                As the clouds and mist dissipate
+                <br />
                 love you and everyone knows it
               </p>
             </ScrollAnimation>
@@ -536,12 +823,19 @@ export default function WeddingInvitation() {
               <div className="relative z-10 mt-6 flex items-stretch gap-4">
                 <div className="ml-10 flex-1 border border-white/70 bg-white p-3 shadow-xl shadow-black/10">
                   <div className="h-[300px] overflow-hidden border border-gray-100">
-                    <img src="/footer.png" alt="Forever moment" className="h-full w-full object-cover" />
+                    <img
+                      src="/footer.png"
+                      alt="Forever moment"
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                 </div>
                 <ScrollAnimation animation="fadeLeft" delay={600}>
                   <div className="flex w-[58px] items-center justify-center text-[12px] tracking-[0.6em] text-gray-700">
-                    <span className="-rotate-90 mt-40 font-bold" style={{ fontFamily: 'var(--font-cormorant)' }}>
+                    <span
+                      className="rotate-90 mt-40 font-bold"
+                      style={{ fontFamily: "var(--font-cormorant)" }}
+                    >
                       FOREVER&nbsp;AND&nbsp;EVER
                     </span>
                   </div>
@@ -550,21 +844,77 @@ export default function WeddingInvitation() {
             </ScrollAnimation>
           </div>
         </section>
+        <section className="border-t border-gray-200 bg-white px-6 py-12">
+          <ScrollAnimation animation="fadeUp" delay={0}>
+            <div className="mb-8">
+              <h2
+                className="text-3xl font-light text-center text-[#8b1a1a] mb-2"
+                style={{ fontFamily: "var(--font-cormorant)" }}
+              >
+                ĐỊA CHỈ NHÀ HÀNG
+              </h2>
+              <p className="text-center text-sm text-gray-600 italic mb-8">
+                Chúng tôi mong bạn sẽ ghé thăm
+              </p>
+            </div>
+          </ScrollAnimation>
+
+          <ScrollAnimation animation="zoomIn" delay={200}>
+            <div className="relative w-full h-[320px] overflow-hidden shadow-lg mb-6">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.137852950251!2d106.66827172559809!3d10.80075223934951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752928b68fbc3f%3A0xc58bea5686708420!2zVHJ1bmcgVMOibSBI4buZaSBOZ2jhu4sgJiBUaeG7h2MgQ8aw4bubaSBQYXZpbGxvbiBUw6JuIFPGoW4gTmjhuqV0!5e0!3m2!1sen!2s!4v1763449810597!5m2!1sen!2s"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </ScrollAnimation>
+
+          <ScrollAnimation animation="fadeUp" delay={300}>
+            <div className="max-w-md mx-auto space-y-4">
+              <div className="text-center">
+                <h3
+                  className="text-lg font-light text-gray-800 mb-2"
+                  style={{ fontFamily: "var(--font-cormorant)" }}
+                >
+                  Nhà hàng Tiệc Cưới
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  <div
+                    className="text-5xl"
+                    style={{ fontFamily: "var(--font-dancing)" }}
+                  >
+                    Tân Sơn Nhất Pavillon
+                  </div>
+                  <div className="mt-3 font-bold">SẢNH TITAN 1G1 - TẦNG 5</div>
+                  <div>200 -202 HOÀNG VĂN THỤ, P.ĐỨC THUẬN, TP.HCM</div>
+                </p>
+              </div>
+            </div>
+          </ScrollAnimation>
+        </section>
 
         {/* SECTION 9: Sunshine spread */}
-        <section className="border-t border-gray-200 bg-white px-6 py-16 space-y-6">
+        <section className="border-t border-gray-200 bg-white py-16 space-y-6">
           {/* Top photo - playful moment */}
           <ScrollAnimation animation="fadeUp" delay={0}>
-            <div className="overflow-hidden shadow-lg animate-fade-up">
-              <img src="/footer.png" alt="Playful moment" className="h-[320px] w-full object-cover" />
+            <div className="overflow-hidden animate-fade-up">
+              <img
+                src="/footer.png"
+                alt="Playful moment"
+                className="h-[200px] w-full object-cover"
+              />
             </div>
           </ScrollAnimation>
 
           {/* Text divider */}
           <ScrollAnimation animation="fadeLeft" delay={200}>
             <div
-              className="flex items-center justify-between border-y border-gray-300 py-4 text-[12px] uppercase tracking-[0.6em] text-gray-700 animate-fade-up anim-delay-100"
-              style={{ fontFamily: 'var(--font-cormorant)' }}
+              className="flex items-center justify-around text-[12px] uppercase tracking-[0.6em] text-gray-700 animate-fade-up anim-delay-100"
+              style={{ fontFamily: "var(--font-cormorant)" }}
             >
               <span>LOVE YOU</span>
               <span>FOREVER</span>
@@ -575,19 +925,44 @@ export default function WeddingInvitation() {
           {/* Bottom photo - intimate moment with text overlay */}
           <ScrollAnimation animation="zoomIn" delay={300}>
             <div className="relative overflow-hidden shadow-2xl animate-soft-zoom">
-              <img src="/footer.png" alt="Sunshine embrace" className="h-[420px] w-full object-cover" />
+              <img
+                src="/footer.png"
+                alt="Sunshine embrace"
+                className="h-[420px] w-full object-cover"
+              />
               <ScrollAnimation animation="fadeRight" delay={500}>
                 <p
                   className="absolute left-6 top-8 text-4xl text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
-                  style={{ fontFamily: 'var(--font-dancing)' }}
+                  style={{ fontFamily: "var(--font-dancing)" }}
                 >
-                  You ar my<br /> Sunshine
+                  You ar my
+                  <br /> Sunshine
                 </p>
               </ScrollAnimation>
             </div>
           </ScrollAnimation>
         </section>
+        <section className="border-t border-gray-200 bg-white px-6 py-12">
+          <ScrollAnimation animation="zoomIn" delay={0}>
+            <div className="mb-8">
+              <h2
+                className="text-3xl font-light text-center text-[#8b1a1a] mb-2"
+                style={{ fontFamily: "var(--font-cormorant)" }}
+              >
+                XÁC NHẬN THAM DỰ
+              </h2>
+              <p className="text-center text-sm text-gray-600 italic">
+                Vui lòng xác nhận trước ngày 14/12/2025
+              </p>
+            </div>
+          </ScrollAnimation>
 
+          <ScrollAnimation animation="fadeUp" delay={200}>
+            <div className="max-w-md mx-auto">
+              <RSVPForm />
+            </div>
+          </ScrollAnimation>
+        </section>
         {/* FOOTER */}
         <footer className="border-t border-gray-200 px-6 py-12 text-center">
           <ScrollAnimation animation="zoomIn" delay={0}>
@@ -598,7 +973,7 @@ export default function WeddingInvitation() {
           <ScrollAnimation animation="fadeUp" delay={200}>
             <p
               className="mt-4 text-sm tracking-[0.4em]"
-              style={{ fontFamily: 'var(--font-cormorant)' }}
+              style={{ fontFamily: "var(--font-cormorant)" }}
             >
               THANK YOU FOR BEING PART OF OUR LOVE STORY
             </p>

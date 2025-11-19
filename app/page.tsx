@@ -33,7 +33,7 @@ const CalendarWidget = () => {
           {day === weddingDay && (
             <span className="relative flex items-center justify-center text-base">
               <img src="/heart.png" alt="" />
-              <span className="absolute text-black font-semibold text-sm">
+              <span className="absolute text-white font-semibold text-sm">
                 {day}
               </span>
             </span>
@@ -207,6 +207,8 @@ const ScrollAnimation = ({
 
 const RSVPForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     attending: "yes",
@@ -223,16 +225,39 @@ const RSVPForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setFormData({
-      name: "",
-      attending: "yes",
-      guests: "1",
-      message: "",
-    });
-    setTimeout(() => setIsSubmitted(false), 3000);
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Không thể gửi email");
+      }
+
+      setIsSubmitted(true);
+      setFormData({
+        name: "",
+        attending: "yes",
+        guests: "1",
+        message: "",
+      });
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Đã xảy ra lỗi");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -314,12 +339,19 @@ const RSVPForm = () => {
         />
       </div>
 
+      {error && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-center text-sm">
+          {error}
+        </div>
+      )}
+
       <button
         type="submit"
-        className="w-full py-3 bg-[#8b1a1a] text-white rounded-lg font-semibold transition-colors duration-300"
+        disabled={isLoading}
+        className="w-full py-3 bg-[#8b1a1a] text-white rounded-lg font-semibold transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         style={{ fontFamily: "var(--font-cormorant)" }}
       >
-        XÁC NHẬN THAM DỰ
+        {isLoading ? "Đang gửi..." : "XÁC NHẬN THAM DỰ"}
       </button>
 
       {isSubmitted && (
@@ -399,45 +431,42 @@ export default function WeddingInvitation() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
           <p
             className="absolute top-8 w-full px-6 text-center text-[13px] font-light text-white leading-relaxed tracking-wider"
-            style={{ fontFamily: "var(--font-cormorant)" }}
           >
             I love three things in this world, Sun, moon and you. <br />
             Sun for morning, moon for night, and you forever.
           </p>
           <h1
-            className="absolute inset-x-0 top-1/2 -translate-y-1/2 px-6 text-center text-4xl font-light text-white tracking-[0.2em]"
-            style={{ fontFamily: "var(--font-playfair)" }}
+            className="absolute uppercase inset-x-0 top-1/2 -translate-y-9/10 px-6 text-center text-4xl font-extrabold text-white"
+            style={{ fontFamily: "var(--font-cormorant)" }}
           >
-            Welcome to our wedding
+            <div className="whitespace-nowrap">
+            welcome to our 
+            </div>
+            wedding
           </h1>
-          <p
-            className="absolute left-8 bottom-32 rotate-[-6deg] text-3xl text-white drop-shadow-lg"
-            style={{ fontFamily: "var(--font-dancing)" }}
-          >
-            We got married
-          </p>
-          <div className="absolute bottom-16 inset-x-0 px-6 text-white">
-            <div className="flex items-end justify-between text-[20px]">
-              <div>
+          <div className="absolute bottom-15 inset-x-0 px-6 text-white">
+            <div className="flex items-center justify-around gap-10 text-[25px]">
+              <div className="flex flex-col items-center ml-5">
                 <p style={{ fontFamily: "var(--font-cormorant)" }}>Ái Tiên</p>
                 <p className="tracking-widest text-[11px]">BRIDE</p>
               </div>
-              <div className="text-center">
-                <p
-                  className="tracking-[0.4em]"
-                  style={{ fontFamily: "var(--font-playfair)" }}
-                >
-                  2025.12.14
-                </p>
-              </div>
-              <div className="text-right">
+              <div className="flex flex-col items-center">
                 <p style={{ fontFamily: "var(--font-cormorant)" }}>Quốc Điển</p>
                 <p className="tracking-widest text-[11px]">GROOM</p>
               </div>
             </div>
           </div>
-          <div className="absolute bottom-0 w-full border-t border-white/50 py-4 text-center text-[12px] tracking-[0.6em] text-white">
-            WEDDING INVITATION 2025
+          <div className="absolute bottom-5 inset-x-0 px-6 text-white">
+            <div className="flex items-center justify-center text-[20px]">
+              <div className="text-center">
+                <p
+                  className="tracking-[0.4em]"
+                  style={{ fontFamily: "var(--font-playfair)" }}
+                >
+                  14.12.2025
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -450,12 +479,12 @@ export default function WeddingInvitation() {
             >
               <span>WEDDING</span>
               <span>INVITATION</span>
-              <span>2025</span>
+              <span className="text-[15px]">2025</span>
             </div>
           </ScrollAnimation>
           <div className="relative h-[250px]">
             <img
-              src="/footer.png"
+              src="/invitation-background.png"
               alt="Right love"
               className="h-full w-full object-cover"
             />
@@ -480,10 +509,10 @@ export default function WeddingInvitation() {
         </section>
 
         {/* SECTION 3 */}
-        <section className="border-t border-gray-200 bg-white px-10 py-14 text-center">
+        <section className=" bg-white px-10 py-6 text-center">
           <ScrollAnimation animation="fadeDown" delay={200}>
             <h3
-              className="mt-4 text-2xl tracking-[0.5em]"
+              className="mt-4 text-2xl tracking-[0.2em] text-center"
               style={{ fontFamily: "var(--font-cormorant)" }}
             >
               OUR LOVE STORY
@@ -492,9 +521,9 @@ export default function WeddingInvitation() {
           <ScrollAnimation animation="zoomIn" delay={0}>
             <div className="relative mt-4 shadow-lg">
               <img
-                src="/footer.png"
+                src="/sit-together.png"
                 alt="Love story"
-                className="h-[320px] w-full object-cover"
+                className="h-[400px] w-full object-cover bg-center bg-no-repeat"
               />
               <ScrollAnimation animation="fadeRight" delay={300}>
                 <p
@@ -533,7 +562,6 @@ export default function WeddingInvitation() {
           <ScrollAnimation animation="fadeIn" delay={400}>
             <div
               className="mx-auto mt-6 max-w-[360px] space-y-2 text-[13px] leading-relaxed text-gray-700"
-              style={{ fontFamily: "var(--font-cormorant)" }}
             >
               <p>Trước đây cứ nghĩ đám cưới chỉ là một thông báo chính thức.</p>
               <p>Giờ mới hiểu đó là một dịp hiếm hoi để mọi người tụ họp.</p>
@@ -546,7 +574,7 @@ export default function WeddingInvitation() {
         </section>
 
         {/* SECTION 4 */}
-        <section className="relative border-t border-gray-200 bg-white px-6 py-12">
+        <section className="relative bg-white px-6 py-12">
           {/* Title ở góc trên phải */}
           <div>
             <div className="absolute right-6 top-4 z-100 text-right">
@@ -582,9 +610,9 @@ export default function WeddingInvitation() {
             <ScrollAnimation animation="fadeRight" delay={100}>
               <div className="ml-auto overflow-hidden shadow-lg w-4/5">
                 <img
-                  src="/footer.png"
+                  src="/read.png"
                   alt="Love story main"
-                  className="h-[380px] w-full object-cover"
+                  className="h-[380px] w-full object-cover bg-bottom"
                 />
               </div>
             </ScrollAnimation>
@@ -594,7 +622,7 @@ export default function WeddingInvitation() {
               <div className="relative">
                 <div className="mr-16 overflow-hidden border-12 border-white -mt-12">
                   <img
-                    src="/footer.png"
+                    src="/read2.png"
                     alt="Love story secondary"
                     className="h-[240px] w-full object-cover"
                   />
@@ -614,7 +642,7 @@ export default function WeddingInvitation() {
         </section>
 
         {/* SECTION 5 */}
-        <section className="border-t border-gray-200 bg-white px-6 py-12 text-center relative">
+        <section className="bg-white px-6 pt-0 text-center relative">
           <ScrollAnimation animation="zoomIn" delay={0}>
             <div className="flex justify-center">
               <SongHui size="text-4xl" />
@@ -647,7 +675,7 @@ export default function WeddingInvitation() {
           <ScrollAnimation animation="zoomIn" delay={500}>
             <div className="mt-8">
               <img
-                src="/footer.png"
+                src="/looking-moutain.png"
                 alt="Embrace"
                 className="h-[320px] w-full object-cover"
               />
@@ -664,7 +692,6 @@ export default function WeddingInvitation() {
           <ScrollAnimation animation="fadeIn" delay={400}>
             <div
               className="mx-auto mt-12 max-w-[360px] space-y-2 text-[13px] leading-relaxed text-gray-700"
-              style={{ fontFamily: "var(--font-cormorant)" }}
             >
               <p>Núi biếc rừng xanh vang vọng tiếng lòng, </p>
               <p>Giữa thế gian rộng lớn, người chung nhịp vẫn tìm thấy nhau.</p>
@@ -677,33 +704,23 @@ export default function WeddingInvitation() {
         </section>
 
         {/* SECTION 6 */}
-        <section className="border-t border-gray-200 bg-white px-6 py-12">
-          <ScrollAnimation animation="fadeLeft" delay={0}>
-            <div
-              className="flex items-center justify-between border-b border-gray-300 pb-4 text-[12px] tracking-[0.4em]"
-              style={{ fontFamily: "var(--font-cormorant)" }}
-            >
-              <span>LOVE</span>
-              <span>WEDDING</span>
-              <span>INFORMATION</span>
-            </div>
-          </ScrollAnimation>
+        <section className="bg-white pb-12">
           <ScrollAnimation animation="zoomIn" delay={200}>
             <div className="mt-8 space-y-2 flex justify-around">
               <img
-                src="/footer.png"
+                src="/small1.png"
                 alt="Info 1"
                 className="h-[250px] object-cover"
               />
               <img
-                src="/footer.png"
+                src="/small2.png"
                 alt="Info 2"
                 className="h-[250px] object-cover"
               />
             </div>
           </ScrollAnimation>
           <ScrollAnimation animation="fadeIn" delay={300}>
-            <p className="mt-8 text-center text-sm leading-relaxed text-gray-600">
+            <p className="mt-8 text-center px-6 text-sm leading-relaxed text-gray-600">
               I love three things in this world, Sun, moon and you. Sun for
               morning, moon for night, and you forever.
             </p>
@@ -727,18 +744,18 @@ export default function WeddingInvitation() {
         </section>
 
         {/* SECTION 7 */}
-        <section className="border-t border-gray-200 bg-white py-12">
+        <section className="bg-white pb-12">
           <ScrollAnimation animation="zoomIn" delay={200}>
             <div className="relative mt-4 h-[500px] overflow-hidden">
               <img
-                src="/footer.png"
+                src="/looking.png"
                 alt="Calendar"
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-black/10" />
               <div className="absolute top-6 inset-x-6 flex items-center justify-between text-[12px] tracking-[0.5em] text-white pointer-events-none">
-                <span>NO.12</span>
-                <span>12.14</span>
+                <span>DEC.14</span>
+                <span>2025</span>
                 <span>FALL IN</span>
                 <span>LOVE</span>
               </div>
@@ -758,127 +775,39 @@ export default function WeddingInvitation() {
             <ScrollAnimation animation="fadeDown" delay={500}>
               <div className="text-center">
                 <p
-                  className="text-sm italic text-gray-700 leading-relaxed"
+                  className="text-xl text-gray-700 leading-relaxed font-bold"
                   style={{ fontFamily: "var(--font-cormorant)" }}
                 >
                   Chủ Nhật, 14.12.2025
                   <br />
-                  Âm lịch 24/10 | 11:00 AM
+                  Âm lịch 25/10 | 11:00 AM
                 </p>
               </div>
             </ScrollAnimation>
             <ScrollAnimation animation="zoomIn" delay={600}>
               <CountdownTimer />
             </ScrollAnimation>
-            <ScrollAnimation animation="fadeIn" delay={700}>
-              <div className="mt-8 ml-4 text-left">
-                <div
-                  className="space-y-2 text-sm leading-relaxed text-gray-600"
-                  style={{ fontFamily: "var(--font-cormorant)" }}
-                >
-                  <p>Ánh trời bừng sáng, rơi vào chốn nhân gian.</p>
-                  <p>Ta vượt ngàn sông núi.</p>
-                  <p>Chỉ để cùng em</p>
-                  <p>Đi qua bốn mùa, dùng chung ba bữa</p>
-                </div>
-              </div>
-            </ScrollAnimation>
           </div>
         </section>
-
-        {/* SECTION 8: Collage */}
-        <section className="border-t border-gray-200 bg-white py-16">
-          <div className="relative animate-fade-up">
-            <div className="absolute top-7 h-80 w-full bg-[#e4e8de]" />
-            <ScrollAnimation animation="fadeRight" delay={0}>
-              <div
-                className="relative z-10 ml-auto grid grid-cols-2 gap-4 px-6"
-                style={{ maxWidth: "85%" }}
-              >
-                {[1, 2].map((item) => (
-                  <div
-                    key={item}
-                    className="overflow-hidden border border-white/70 shadow-lg shadow-black/10 animate-soft-zoom anim-delay-100"
-                  >
-                    <img
-                      src="/footer.png"
-                      alt={`Collage ${item}`}
-                      className="h-48 w-full object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            </ScrollAnimation>
-            <ScrollAnimation animation="fadeIn" delay={300}>
-              <p
-                className="relative z-10 mt-5 ml-5 text-[20px] leading-relaxed text-gray-700"
-                style={{ fontFamily: "var(--font-dancing)" }}
-              >
-                As the clouds and mist dissipate
-                <br />
-                love you and everyone knows it
-              </p>
-            </ScrollAnimation>
-            <ScrollAnimation animation="zoomIn" delay={400}>
-              <div className="relative z-10 mt-6 flex items-stretch gap-4">
-                <div className="ml-10 flex-1 border border-white/70 bg-white p-3 shadow-xl shadow-black/10">
-                  <div className="h-[300px] overflow-hidden border border-gray-100">
-                    <img
-                      src="/footer.png"
-                      alt="Forever moment"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                </div>
-                <ScrollAnimation animation="fadeLeft" delay={600}>
-                  <div className="flex w-[58px] items-center justify-center text-[12px] tracking-[0.6em] text-gray-700">
-                    <span
-                      className="rotate-90 mt-40 font-bold"
-                      style={{ fontFamily: "var(--font-cormorant)" }}
-                    >
-                      FOREVER&nbsp;AND&nbsp;EVER
-                    </span>
-                  </div>
-                </ScrollAnimation>
-              </div>
-            </ScrollAnimation>
-          </div>
-        </section>
-        <section className="border-t border-gray-200 bg-white px-6 py-12">
+        <section className="bg-white py-6">
           <ScrollAnimation animation="fadeUp" delay={0}>
-            <div className="mb-8">
+            <div className="mb-4">
               <h2
-                className="text-3xl font-light text-center text-[#8b1a1a] mb-2"
+                className="text-3xl text-center text-[#8b1a1a] mb-2"
                 style={{ fontFamily: "var(--font-cormorant)" }}
               >
                 ĐỊA CHỈ NHÀ HÀNG
               </h2>
-              <p className="text-center text-sm text-gray-600 italic mb-8">
+              <p className="text-center text-sm text-gray-600 italic mb-4">
                 Chúng tôi mong bạn sẽ ghé thăm
               </p>
             </div>
           </ScrollAnimation>
-
-          <ScrollAnimation animation="zoomIn" delay={200}>
-            <div className="relative w-full h-[320px] overflow-hidden shadow-lg mb-6">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.137852950251!2d106.66827172559809!3d10.80075223934951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752928b68fbc3f%3A0xc58bea5686708420!2zVHJ1bmcgVMOibSBI4buZaSBOZ2jhu4sgJiBUaeG7h2MgQ8aw4bubaSBQYXZpbGxvbiBUw6JuIFPGoW4gTmjhuqV0!5e0!3m2!1sen!2s!4v1763449810597!5m2!1sen!2s"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-          </ScrollAnimation>
-
           <ScrollAnimation animation="fadeUp" delay={300}>
             <div className="max-w-md mx-auto space-y-4">
               <div className="text-center">
                 <h3
-                  className="text-lg font-light text-gray-800 mb-2"
-                  style={{ fontFamily: "var(--font-cormorant)" }}
+                  className="text-lg font-light text-gray-800 mb-2 uppercase"
                 >
                   Nhà hàng Tiệc Cưới
                 </h3>
@@ -895,15 +824,39 @@ export default function WeddingInvitation() {
               </div>
             </div>
           </ScrollAnimation>
+          <ScrollAnimation animation="zoomIn" delay={200}>
+            <div className="relative w-full h-[320px] overflow-hidden mt-4">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.137852950251!2d106.66827172559809!3d10.80075223934951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752928b68fbc3f%3A0xc58bea5686708420!2zVHJ1bmcgVMOibSBI4buZaSBOZ2jhu4sgJiBUaeG7h2MgQ8aw4bubaSBQYXZpbGxvbiBUw6JuIFPGoW4gTmjhuqV0!5e0!3m2!1sen!2s!4v1763449810597!5m2!1sen!2s"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </ScrollAnimation>
+          
         </section>
 
         {/* SECTION 9: Sunshine spread */}
-        <section className="border-t border-gray-200 bg-white py-16 space-y-6">
+        <section className="bg-white pb-16 pt-0 space-y-6">
+        <ScrollAnimation animation="fadeLeft" delay={200}>
+            <div
+              className="flex items-center justify-around text-[12px] uppercase tracking-[0.6em] text-gray-700 animate-fade-up anim-delay-100"
+              style={{ fontFamily: "var(--font-cormorant)" }}
+            >
+              <span>LOVE YOU</span>
+              <span>FOREVER</span>
+              <span>AND EVER</span>
+            </div>
+          </ScrollAnimation>
           {/* Top photo - playful moment */}
           <ScrollAnimation animation="fadeUp" delay={0}>
             <div className="overflow-hidden animate-fade-up">
               <img
-                src="/footer.png"
+                src="/footer-image1.png"
                 alt="Playful moment"
                 className="h-[200px] w-full object-cover"
               />
@@ -924,25 +877,27 @@ export default function WeddingInvitation() {
 
           {/* Bottom photo - intimate moment with text overlay */}
           <ScrollAnimation animation="zoomIn" delay={300}>
-            <div className="relative overflow-hidden shadow-2xl animate-soft-zoom">
+            <div className="relative overflow-hidden animate-soft-zoom">
               <img
-                src="/footer.png"
+                src="/footer-image.png"
                 alt="Sunshine embrace"
                 className="h-[420px] w-full object-cover"
               />
-              <ScrollAnimation animation="fadeRight" delay={500}>
+              {/* White layer opening from bottom */}
+              <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-white via-white/70 to-transparent animate-white-reveal" />
+              <div>
                 <p
-                  className="absolute left-6 top-8 text-4xl text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+                  className="absolute left-6 top-8 text-4xl text-white z-10"
                   style={{ fontFamily: "var(--font-dancing)" }}
                 >
                   You ar my
                   <br /> Sunshine
                 </p>
-              </ScrollAnimation>
+              </div>
             </div>
           </ScrollAnimation>
         </section>
-        <section className="border-t border-gray-200 bg-white px-6 py-12">
+        <section className="bg-white pt-0 px-6">
           <ScrollAnimation animation="zoomIn" delay={0}>
             <div className="mb-8">
               <h2
@@ -964,7 +919,7 @@ export default function WeddingInvitation() {
           </ScrollAnimation>
         </section>
         {/* FOOTER */}
-        <footer className="border-t border-gray-200 px-6 py-12 text-center">
+        <footer className="px-6 py-12 text-center">
           <ScrollAnimation animation="zoomIn" delay={0}>
             <div className="flex justify-center">
               <SongHui size="text-6xl" />
@@ -1067,6 +1022,15 @@ export default function WeddingInvitation() {
           }
         }
 
+        @keyframes whiteReveal {
+          from {
+            clip-path: inset(100% 0 0 0);
+          }
+          to {
+            clip-path: inset(0 0 0 0);
+          }
+        }
+
         .animate-fade-up {
           animation: fadeUp 900ms ease both;
         }
@@ -1097,6 +1061,10 @@ export default function WeddingInvitation() {
 
         .animate-slide-up {
           animation: slideUp 1000ms ease-out both;
+        }
+
+        .animate-white-reveal {
+          animation: whiteReveal 1500ms ease-out both;
         }
 
         .anim-delay-100 {

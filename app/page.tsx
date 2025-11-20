@@ -275,7 +275,7 @@ const RSVPForm = () => {
           value={formData.name}
           onChange={handleChange}
           required
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
           placeholder="Nhập họ tên của bạn"
         />
       </div>
@@ -292,7 +292,7 @@ const RSVPForm = () => {
             name="attending"
             value={formData.attending}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
           >
             <option value="yes">Có, tôi sẽ đến</option>
             <option value="no">Tiếc là không thể</option>
@@ -311,7 +311,7 @@ const RSVPForm = () => {
             name="guests"
             value={formData.guests}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
           >
             {[1, 2, 3, 4, 5].map((num) => (
               <option key={num} value={num}>
@@ -333,7 +333,7 @@ const RSVPForm = () => {
           name="message"
           value={formData.message}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500 resize-none"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none resize-none"
           rows={4}
           placeholder="Viết một lời chúc mừng..."
         />
@@ -527,7 +527,7 @@ export default function WeddingInvitation() {
               />
               <ScrollAnimation animation="fadeRight" delay={300}>
                 <p
-                  className="pointer-events-none absolute -bottom-6 -right-6 z-10 rotate-[-12deg] text-[52px] leading-none text-[#e6403b] drop-shadow-[0_6px_14px_rgba(0,0,0,0.25)]"
+                  className="pointer-events-none absolute -bottom-6 -right-6 z-10 rotate-[-12deg] text-[52px] leading-none text-[#8b1a1a] drop-shadow-[0_6px_14px_rgba(0,0,0,0.25)]"
                   style={{ fontFamily: "var(--font-dancing)" }}
                 >
                   Sweet
@@ -577,15 +577,15 @@ export default function WeddingInvitation() {
         <section className="relative bg-white px-6 py-12">
           {/* Title ở góc trên phải */}
           <div>
-            <div className="absolute right-6 top-4 z-100 text-right">
+            <div className="absolute right-6 top-0 z-100 text-right">
               <p
-                className="text-5xl text-[#e6403b]"
+                className="text-5xl text-[#8b1a1a]"
                 style={{ fontFamily: "var(--font-cormorant)" }}
               >
                 OUR
               </p>
               <p
-                className="text-3xl font-bold text-[#e6403b]"
+                className="text-3xl font-bold text-[#8b1a1a]"
                 style={{ fontFamily: "var(--font-cormorant)" }}
               >
                 LOVE STORY
@@ -790,19 +790,6 @@ export default function WeddingInvitation() {
           </div>
         </section>
         <section className="bg-white py-6">
-          <ScrollAnimation animation="fadeUp" delay={0}>
-            <div className="mb-4">
-              <h2
-                className="text-3xl text-center text-[#8b1a1a] mb-2"
-                style={{ fontFamily: "var(--font-cormorant)" }}
-              >
-                ĐỊA CHỈ NHÀ HÀNG
-              </h2>
-              <p className="text-center text-sm text-gray-600 italic mb-4">
-                Chúng tôi mong bạn sẽ ghé thăm
-              </p>
-            </div>
-          </ScrollAnimation>
           <ScrollAnimation animation="fadeUp" delay={300}>
             <div className="max-w-md mx-auto space-y-4">
               <div className="text-center">
@@ -860,40 +847,6 @@ export default function WeddingInvitation() {
                 alt="Playful moment"
                 className="h-[200px] w-full object-cover"
               />
-            </div>
-          </ScrollAnimation>
-
-          {/* Text divider */}
-          <ScrollAnimation animation="fadeLeft" delay={200}>
-            <div
-              className="flex items-center justify-around text-[12px] uppercase tracking-[0.6em] text-gray-700 animate-fade-up anim-delay-100"
-              style={{ fontFamily: "var(--font-cormorant)" }}
-            >
-              <span>LOVE YOU</span>
-              <span>FOREVER</span>
-              <span>AND EVER</span>
-            </div>
-          </ScrollAnimation>
-
-          {/* Bottom photo - intimate moment with text overlay */}
-          <ScrollAnimation animation="zoomIn" delay={300}>
-            <div className="relative overflow-hidden animate-soft-zoom">
-              <img
-                src="/footer-image.png"
-                alt="Sunshine embrace"
-                className="h-[420px] w-full object-cover"
-              />
-              {/* White layer opening from bottom */}
-              <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-white via-white/70 to-transparent animate-white-reveal" />
-              <div>
-                <p
-                  className="absolute left-6 top-8 text-4xl text-white z-10"
-                  style={{ fontFamily: "var(--font-dancing)" }}
-                >
-                  You ar my
-                  <br /> Sunshine
-                </p>
-              </div>
             </div>
           </ScrollAnimation>
         </section>

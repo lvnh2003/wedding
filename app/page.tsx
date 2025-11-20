@@ -560,21 +560,29 @@ export default function WeddingInvitation() {
           </ScrollAnimation>
 
           <ScrollAnimation animation="fadeIn" delay={400}>
-            <div
-              className="mx-auto mt-6 max-w-[360px] space-y-2 text-[13px] leading-relaxed text-gray-700"
-            >
-              <p>Trước đây cứ nghĩ đám cưới chỉ là một thông báo chính thức.</p>
-              <p>Giờ mới hiểu đó là một dịp hiếm hoi để mọi người tụ họp.</p>
-              <p>Là những chuyến đi xa chỉ để có mặt bên nhau.</p>
-              <p>Là sự ủng hộ vô điều kiện từ những người thương yêu.</p>
-              <p>Cảm ơn gia đình, bạn bè đã luôn đồng hành.</p>
-              <p>Lâu rồi không gặp, thật sự rất nhớ mọi người!</p>
+            <div className="mx-auto mt-6 max-w-[360px]">
+              <div className="grid grid-cols-2 gap-6 text-[13px] leading-relaxed text-gray-700">
+                <div className="text-center">
+                  <p className="font-semibold text-gray-800 mb-3 text-[14px]">Nhà Trai</p>
+                  <div className="space-y-1">
+                    <p className="text-gray-700">Ông: Trà Quốc Bảo</p>
+                    <p className="text-gray-700">Bà: Nguyễn Thị Hồng Vân</p>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="font-semibold text-gray-800 mb-3 text-[14px]">Nhà Gái</p>
+                  <div className="space-y-1">
+                    <p className="text-gray-700">Ông: Nguyễn Văn Kham</p>
+                    <p className="text-gray-700">Bà: Bùi Thị Kiều Anh</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </ScrollAnimation>
         </section>
 
         {/* SECTION 4 */}
-        <section className="relative bg-white px-6 py-12">
+        <section className="relative bg-white px-6 pt-12 pb-6">
           {/* Title ở góc trên phải */}
           <div>
             <div className="absolute right-6 top-0 z-100 text-right">
@@ -673,7 +681,7 @@ export default function WeddingInvitation() {
             </div>
           </ScrollAnimation>
           <ScrollAnimation animation="zoomIn" delay={500}>
-            <div className="mt-8">
+            <div className="mt-4">
               <img
                 src="/looking-moutain.png"
                 alt="Embrace"
@@ -689,51 +697,24 @@ export default function WeddingInvitation() {
               Love and freedom <br /> you and gentleness
             </p>
           </ScrollAnimation>
-          <ScrollAnimation animation="fadeIn" delay={400}>
-            <div
-              className="mx-auto mt-12 max-w-[360px] space-y-2 text-[13px] leading-relaxed text-gray-700"
-            >
-              <p>Núi biếc rừng xanh vang vọng tiếng lòng, </p>
-              <p>Giữa thế gian rộng lớn, người chung nhịp vẫn tìm thấy nhau.</p>
-              <p>
-                Tình yêu đến như một lẽ tự nhiên, Và chúng ta nắm tay nhau đi
-                đến trọn đời.
-              </p>
-            </div>
-          </ScrollAnimation>
         </section>
 
         {/* SECTION 6 */}
-        <section className="bg-white pb-12">
-          <ScrollAnimation animation="zoomIn" delay={200}>
-            <div className="mt-8 space-y-2 flex justify-around">
-              <img
-                src="/small1.png"
-                alt="Info 1"
-                className="h-[250px] object-cover"
-              />
-              <img
-                src="/small2.png"
-                alt="Info 2"
-                className="h-[250px] object-cover"
-              />
-            </div>
-          </ScrollAnimation>
+        <section className="bg-white pb-4">
           <ScrollAnimation animation="fadeIn" delay={300}>
-            <p className="mt-8 text-center px-6 text-sm leading-relaxed text-gray-600">
+            <p className="mt-10 text-center px-6 text-sm leading-relaxed text-gray-600">
               I love three things in this world, Sun, moon and you. Sun for
               morning, moon for night, and you forever.
             </p>
           </ScrollAnimation>
           <ScrollAnimation animation="zoomIn" delay={400}>
             <div className="mt-6 flex flex-col items-center gap-4">
-              <SongHui size="text-6xl" />
-              <p
-                className="text-3xl tracking-[0.3em]"
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                YOU ARE PERFECT
-              </p>
+              <h3
+              className="mt-4 text-2xl tracking-[0.5em]"
+              style={{ fontFamily: "var(--font-cormorant)" }}
+            >
+              YOU ARE PERFECT
+            </h3>
             </div>
           </ScrollAnimation>
           <ScrollAnimation animation="fadeUp" delay={500}>
@@ -746,7 +727,7 @@ export default function WeddingInvitation() {
         {/* SECTION 7 */}
         <section className="bg-white pb-12">
           <ScrollAnimation animation="zoomIn" delay={200}>
-            <div className="relative mt-4 h-[500px] overflow-hidden">
+            <div className="relative mt-4 h-[450px] overflow-hidden">
               <img
                 src="/looking.png"
                 alt="Calendar"
@@ -789,7 +770,7 @@ export default function WeddingInvitation() {
             </ScrollAnimation>
           </div>
         </section>
-        <section className="bg-white py-6">
+        <section className="bg-white pb-6 pt-0">
           <ScrollAnimation animation="fadeUp" delay={300}>
             <div className="max-w-md mx-auto space-y-4">
               <div className="text-center">
@@ -812,7 +793,7 @@ export default function WeddingInvitation() {
             </div>
           </ScrollAnimation>
           <ScrollAnimation animation="zoomIn" delay={200}>
-            <div className="relative w-full h-[320px] overflow-hidden mt-4">
+            <div className="relative w-full h-[250px] overflow-hidden mt-4 px-8">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.137852950251!2d106.66827172559809!3d10.80075223934951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752928b68fbc3f%3A0xc58bea5686708420!2zVHJ1bmcgVMOibSBI4buZaSBOZ2jhu4sgJiBUaeG7h2MgQ8aw4bubaSBQYXZpbGxvbiBUw6JuIFPGoW4gTmjhuqV0!5e0!3m2!1sen!2s!4v1763449810597!5m2!1sen!2s"
                 width="100%"

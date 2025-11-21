@@ -22,22 +22,14 @@ const dancing = Dancing_Script({
 })
 
 export const metadata: Metadata = {
-  title: 'Wedding Invitation 2050',
+  title: 'Wedding Invitation 2025 - Kjd & Tee',
   description: 'You are invited to celebrate our special day',
   generator: 'v0.app',
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
+        url: '/web-icon.png',
         media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
       },
     ],
     apple: '/apple-icon.png',

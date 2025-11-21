@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
 const CalendarWidget = () => {
   const daysInMay = 31;
@@ -21,13 +22,12 @@ const CalendarWidget = () => {
       {days.map((day, idx) => (
         <div
           key={idx}
-          className={`aspect-square flex items-center justify-center text-sm ${
-            day === weddingDay
-              ? "text-white font-semibold relative"
-              : day
+          className={`aspect-square flex items-center justify-center text-sm ${day === weddingDay
+            ? "text-white font-semibold relative"
+            : day
               ? "text-white/70"
               : ""
-          }`}
+            }`}
         >
           {day && day !== weddingDay && day}
           {day === weddingDay && (
@@ -171,13 +171,13 @@ const ScrollAnimation = ({
 }: {
   children: React.ReactNode;
   animation?:
-    | "fadeIn"
-    | "fadeLeft"
-    | "fadeRight"
-    | "fadeUp"
-    | "fadeDown"
-    | "zoomIn"
-    | "slideUp";
+  | "fadeIn"
+  | "fadeLeft"
+  | "fadeRight"
+  | "fadeUp"
+  | "fadeDown"
+  | "zoomIn"
+  | "slideUp";
   delay?: number;
   className?: string;
 }) => {
@@ -351,7 +351,7 @@ const RSVPForm = () => {
         className="w-full py-3 bg-[#8b1a1a] text-white rounded-lg font-semibold transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         style={{ fontFamily: "var(--font-cormorant)" }}
       >
-        {isLoading ? "Đang gửi..." : "XÁC NHẬN THAM DỰ"}
+        {isLoading ? "Đang gửi..." : "Gửi"}
       </button>
 
       {isSubmitted && (
@@ -416,6 +416,53 @@ const MusicPlayer = () => {
   );
 };
 
+const GuestName = () => {
+  const searchParams = useSearchParams();
+  const name = searchParams.get("name");
+
+  if (!name) return (
+    <div className="text-center flex flex-col items-center justify-center my-4">
+      <p
+        className="text-lg tracking-[0.1em] text-gray-600 font-medium"
+        style={{ fontFamily: "var(--font-cormorant)" }}
+      >
+        Trân trọng kính mời
+      </p>
+      <p
+        className="text-3xl text-[#8b1a1a] font-bold mt-2"
+        style={{ fontFamily: "var(--font-dancing)" }}
+      >
+        Quý Khách
+      </p>
+    </div>
+  );
+
+  return (
+    <div className="text-center flex flex-col items-center justify-center my-4">
+      <p
+        className="text-lg tracking-[0.1em] text-gray-600 font-medium"
+        style={{ fontFamily: "var(--font-cormorant)" }}
+      >
+        Trân trọng kính mời
+      </p>
+      <p
+        className="text-3xl text-[#8b1a1a] font-bold mt-2"
+        style={{ fontFamily: "var(--font-dancing)" }}
+      >
+        {name}
+      </p>
+      <p
+        className="text-lg tracking-[0.1em] text-gray-600 font-medium"
+        style={{ fontFamily: "var(--font-cormorant)" }}
+      >
+        Đến chung vui cùng gia đình chúng tôi
+        <br />
+        Vào lúc
+      </p>
+    </div>
+  );
+};
+
 export default function WeddingInvitation() {
   return (
     <main className="min-h-screen bg-[#f3f1ed] text-gray-900 overflow-hidden">
@@ -432,15 +479,15 @@ export default function WeddingInvitation() {
           <p
             className="absolute top-8 w-full px-6 text-center text-[13px] font-light text-white leading-relaxed tracking-wider"
           >
-            I love three things in this world, Sun, moon and you. <br />
-            Sun for morning, moon for night, and you forever.
+            I love three things in this world, Sun, Moon and You. <br />
+            Sun for morning, Moon for night, and You forever.
           </p>
           <h1
             className="absolute uppercase inset-x-0 top-1/2 -translate-y-9/10 px-6 text-center text-4xl font-extrabold text-white"
             style={{ fontFamily: "var(--font-cormorant)" }}
           >
             <div className="whitespace-nowrap">
-            welcome to our 
+              welcome to our
             </div>
             wedding
           </h1>
@@ -560,27 +607,95 @@ export default function WeddingInvitation() {
           </ScrollAnimation>
 
           <ScrollAnimation animation="fadeIn" delay={400}>
-            <div className="mx-auto mt-6 max-w-[360px]">
-              <div className="grid grid-cols-2 gap-6 text-[13px] leading-relaxed text-gray-700">
+            <div className="mx-auto mt-6 w-full">
+              <div className="grid grid-cols-2 gap-6 text-[15px] leading-relaxed text-gray-700" style={{ fontFamily: "var(--font-cormorant)" }}>
                 <div className="text-center">
-                  <p className="font-semibold text-gray-800 mb-3 text-[14px]">Nhà Trai</p>
+                  <p className="font-semibold text-gray-800 mb-3 text-[20px]">nhà trai</p>
                   <div className="space-y-1">
-                    <p className="text-gray-700">Ông: Trà Quốc Bảo</p>
-                    <p className="text-gray-700">Bà: Nguyễn Thị Hồng Vân</p>
+                    Ông:  <span className="text-gray-700 font-bold">Trà Quốc Bảo</span>
+                    <br />
+                    Bà:<span className="text-gray-700 font-bold"> Nguyễn Thị Hồng Vân</span>
                   </div>
                 </div>
                 <div className="text-center">
-                  <p className="font-semibold text-gray-800 mb-3 text-[14px]">Nhà Gái</p>
+                  <p className="font-semibold text-gray-800 mb-3 text-[20px]">nhà gái</p>
                   <div className="space-y-1">
-                    <p className="text-gray-700">Ông: Nguyễn Văn Kham</p>
-                    <p className="text-gray-700">Bà: Bùi Thị Kiều Anh</p>
+                    Ông: <span className="text-gray-700 font-bold">Nguyễn Văn Kham</span>
+                    <br />
+                    Bà:<span className="text-gray-700 font-bold"> Bùi Thị Kiều Oanh</span>
                   </div>
                 </div>
               </div>
             </div>
           </ScrollAnimation>
         </section>
-
+        <section className="bg-white pb-6 pt-0">
+          <ScrollAnimation animation="fadeDown" delay={500}>
+            <Suspense>
+              <GuestName />
+            </Suspense>
+          </ScrollAnimation>
+          <div className="flex justify-center my-0">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-5 h-5 text-[#8b1a1a]"
+            >
+              <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.312 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+            </svg>
+          </div>
+          <div className="mt-2 space-y-6">
+            <ScrollAnimation animation="fadeDown" delay={500}>
+              <div className="text-center">
+                <p
+                  className="text-xl text-gray-700 leading-relaxed"
+                  style={{ fontFamily: "var(--font-cormorant)" }}
+                >
+                  Chủ Nhật, 14.12.2025
+                  <br />
+                  Âm lịch 25/10 | 11:00 AM
+                </p>
+              </div>
+            </ScrollAnimation>
+            <ScrollAnimation animation="zoomIn" delay={600}>
+              <CountdownTimer />
+            </ScrollAnimation>
+          </div>
+        </section>
+        <section className="bg-white pb-6 pt-0">
+          <ScrollAnimation animation="fadeUp" delay={300}>
+            <div className="max-w-md mx-auto space-y-4">
+              <div className="text-center">
+                <h3
+                  className="text-lg font-light text-gray-800 mb-2 uppercase"
+                >
+                  Tại nhà hàng Tiệc Cưới
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  <div
+                    className="text-5xl"
+                    style={{ fontFamily: "var(--font-dancing)" }}
+                  >
+                    Tân Sơn Nhất Pavillon
+                  </div>
+                  <div className="flex justify-center my-5">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="w-5 h-5 text-[#8b1a1a]"
+                    >
+                      <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.312 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                    </svg>
+                  </div>
+                  <div className="mt-3 font-bold">SẢNH TITAN 1G1 - TẦNG 5</div>
+                  <div>200 -202 HOÀNG VĂN THỤ, P.ĐỨC THUẬN, TP.HCM</div>
+                </p>
+              </div>
+            </div>
+          </ScrollAnimation>
+        </section>
         {/* SECTION 4 */}
         <section className="relative bg-white px-6 pt-12 pb-6">
           {/* Title ở góc trên phải */}
@@ -700,32 +815,30 @@ export default function WeddingInvitation() {
         </section>
 
         {/* SECTION 6 */}
-        <section className="bg-white pb-4">
-          <ScrollAnimation animation="fadeIn" delay={300}>
-            <p className="mt-10 text-center px-6 text-sm leading-relaxed text-gray-600">
-              I love three things in this world, Sun, moon and you. Sun for
-              morning, moon for night, and you forever.
-            </p>
+        <section className="bg-white pb-4 mt-14">
+          <ScrollAnimation animation="fadeIn" delay={200}>
+            <SongHui size="text-4xl" />
           </ScrollAnimation>
-          <ScrollAnimation animation="zoomIn" delay={400}>
+          <ScrollAnimation animation="zoomIn" delay={200}>
             <div className="mt-6 flex flex-col items-center gap-4">
               <h3
-              className="mt-4 text-2xl tracking-[0.5em]"
-              style={{ fontFamily: "var(--font-cormorant)" }}
-            >
-              YOU ARE PERFECT
-            </h3>
+                className="mt-4 text-2xl tracking-[0.5em]"
+                style={{ fontFamily: "var(--font-cormorant)" }}
+              >
+                YOU ARE PERFECT
+              </h3>
             </div>
           </ScrollAnimation>
-          <ScrollAnimation animation="fadeUp" delay={500}>
-            <p className="mt-4 text-center text-xs italic text-gray-400">
-              Thương một người, dành trọn mọi đời
+          <ScrollAnimation animation="fadeIn" delay={200}>
+            <p className="mt-4 text-center px-6 text-sm leading-relaxed text-gray-600">
+              Chúc đây sẽ là khởi đầu của một cuộc phiêu lưu mới, một câu chuyện mới và một cuộc sống mới bên nhau
             </p>
           </ScrollAnimation>
+
         </section>
 
         {/* SECTION 7 */}
-        <section className="bg-white pb-12">
+        <section className="bg-white pb-8">
           <ScrollAnimation animation="zoomIn" delay={200}>
             <div className="relative mt-4 h-[450px] overflow-hidden">
               <img
@@ -752,65 +865,10 @@ export default function WeddingInvitation() {
               </div>
             </div>
           </ScrollAnimation>
-          <div className="mt-8 space-y-6">
-            <ScrollAnimation animation="fadeDown" delay={500}>
-              <div className="text-center">
-                <p
-                  className="text-xl text-gray-700 leading-relaxed font-bold"
-                  style={{ fontFamily: "var(--font-cormorant)" }}
-                >
-                  Chủ Nhật, 14.12.2025
-                  <br />
-                  Âm lịch 25/10 | 11:00 AM
-                </p>
-              </div>
-            </ScrollAnimation>
-            <ScrollAnimation animation="zoomIn" delay={600}>
-              <CountdownTimer />
-            </ScrollAnimation>
-          </div>
         </section>
-        <section className="bg-white pb-6 pt-0">
-          <ScrollAnimation animation="fadeUp" delay={300}>
-            <div className="max-w-md mx-auto space-y-4">
-              <div className="text-center">
-                <h3
-                  className="text-lg font-light text-gray-800 mb-2 uppercase"
-                >
-                  Nhà hàng Tiệc Cưới
-                </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  <div
-                    className="text-5xl"
-                    style={{ fontFamily: "var(--font-dancing)" }}
-                  >
-                    Tân Sơn Nhất Pavillon
-                  </div>
-                  <div className="mt-3 font-bold">SẢNH TITAN 1G1 - TẦNG 5</div>
-                  <div>200 -202 HOÀNG VĂN THỤ, P.ĐỨC THUẬN, TP.HCM</div>
-                </p>
-              </div>
-            </div>
-          </ScrollAnimation>
-          <ScrollAnimation animation="zoomIn" delay={200}>
-            <div className="relative w-full h-[250px] overflow-hidden mt-4 px-8">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.137852950251!2d106.66827172559809!3d10.80075223934951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752928b68fbc3f%3A0xc58bea5686708420!2zVHJ1bmcgVMOibSBI4buZaSBOZ2jhu4sgJiBUaeG7h2MgQ8aw4bubaSBQYXZpbGxvbiBUw6JuIFPGoW4gTmjhuqV0!5e0!3m2!1sen!2s!4v1763449810597!5m2!1sen!2s"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-          </ScrollAnimation>
-          
-        </section>
-
         {/* SECTION 9: Sunshine spread */}
-        <section className="bg-white pb-16 pt-0 space-y-6">
-        <ScrollAnimation animation="fadeLeft" delay={200}>
+        <section className="bg-white pb-6 pt-0 space-y-6">
+          <ScrollAnimation animation="fadeLeft" delay={200}>
             <div
               className="flex items-center justify-around text-[12px] uppercase tracking-[0.6em] text-gray-700 animate-fade-up anim-delay-100"
               style={{ fontFamily: "var(--font-cormorant)" }}
@@ -853,10 +911,10 @@ export default function WeddingInvitation() {
           </ScrollAnimation>
         </section>
         {/* FOOTER */}
-        <footer className="px-6 py-12 text-center">
+        <footer className="px-6 pt-6 pb-12 text-center">
           <ScrollAnimation animation="zoomIn" delay={0}>
             <div className="flex justify-center">
-              <SongHui size="text-6xl" />
+              <img src="/calen_heart_1.png" alt="" className="w-30" />
             </div>
           </ScrollAnimation>
           <ScrollAnimation animation="fadeUp" delay={200}>

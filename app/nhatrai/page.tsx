@@ -5,8 +5,8 @@ import { useSearchParams } from "next/navigation";
 
 const CalendarWidget = () => {
   const daysInMay = 31;
-  const startDay = 1; // 0 = Sunday
-  const weddingDay = 14;
+  const startDay = 8;
+  const weddingDay = 27;
   const days = [];
 
   for (let i = 0; i < startDay; i++) days.push(null);
@@ -76,7 +76,7 @@ const CountdownTimer = () => {
   });
 
   useEffect(() => {
-    const weddingDate = new Date("2025-12-14T12:00:00");
+    const weddingDate = new Date("2025-12-27T11:00:00");
 
     const updateTimer = () => {
       const now = new Date();
@@ -454,7 +454,7 @@ const GuestName = () => {
     );
 
   return (
-    <div className="text-center flex flex-col items-center justify-center my-4">
+    <div className="text-center flex flex-col items-center justify-center mt-4">
       <p
         className="text-lg tracking-[0.1em] text-gray-600 font-medium"
         style={{ fontFamily: "var(--font-cormorant)" }}
@@ -472,8 +472,6 @@ const GuestName = () => {
         style={{ fontFamily: "var(--font-cormorant)" }}
       >
         Đến chung vui cùng gia đình chúng tôi
-        <br />
-        Vào lúc
       </p>
     </div>
   );
@@ -522,7 +520,7 @@ export default function WeddingInvitation() {
                   className="tracking-[0.4em]"
                   style={{ fontFamily: "var(--font-playfair)" }}
                 >
-                  14.12.2025
+                  27.12.2025
                 </p>
               </div>
             </div>
@@ -668,16 +666,17 @@ export default function WeddingInvitation() {
               <GuestName />
             </Suspense>
           </ScrollAnimation>
-          <div className="mt-2 space-y-6">
+          <div className="-mt-4 space-y-6">
             <ScrollAnimation animation="fadeDown" delay={200}>
               <div className="text-center">
                 <p
                   className="text-xl text-gray-700 leading-relaxed"
                   style={{ fontFamily: "var(--font-cormorant)" }}
                 >
-                  Chủ Nhật, 14.12.2025
-                  <br />
-                  Âm lịch 25/10 | 11:00 AM
+                    <img src="/patterm.png" className="w-1/5 flex justify-center mx-auto mt-4" alt="" />
+                    <span className="text-xl">Vào lúc 11 giờ 00 phút</span> - thứ 7
+                    <p className="text-5xl pb-1">27.12.2025</p>
+                 Nhằm ngày 08 tháng 11 năm Ất Tị
                 </p>
               </div>
             </ScrollAnimation>
@@ -709,16 +708,16 @@ export default function WeddingInvitation() {
                     className="text-5xl"
                     style={{ fontFamily: "var(--font-dancing)" }}
                   >
-                    Tân Sơn Nhất Pavillon
+                    Phú Long Hotel & Restaurant
                   </div>
                   <div
                     className="mt-3 font-bold"
                     style={{ fontFamily: "var(--font-cormorant)" }}
                   >
-                    SẢNH TITAN 1G1 - TẦNG 5
+                    SẢNH TAM DUYÊN 1
                   </div>
                   <div style={{ fontFamily: "var(--font-cormorant)" }}>
-                    200 -202 HOÀNG VĂN THỤ, P.ĐỨC THUẬN, TP.HCM
+                    495 PHAN CHÂU TRINH, P. TAM KỲ, TP. ĐÀ NẴNG
                   </div>
                 </p>
               </div>
@@ -927,7 +926,7 @@ export default function WeddingInvitation() {
                 XÁC NHẬN THAM DỰ
               </h2>
               <p className="text-center text-sm text-gray-600 italic">
-                Vui lòng xác nhận trước ngày 14/12/2025
+                Vui lòng xác nhận trước ngày 27/12/2025
               </p>
             </div>
           </ScrollAnimation>

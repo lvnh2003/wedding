@@ -14,7 +14,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const recipientEmail = process.env.RECIPIENT_EMAIL || "lanhdaugau1605@gmail.com";
+    const recipientEmail = process.env.RECIPIENT_EMAIL || "quocdientra1412@gmail.com";
 
     const attendingText: { [key: string]: string } = {
       yes: "Có, tôi sẽ đến",

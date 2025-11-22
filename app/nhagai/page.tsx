@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 const CalendarWidget = () => {
   const daysInMay = 31;
-  const startDay = 1; // 0 = Sunday
+  const startDay = 1;
   const weddingDay = 14;
   const days = [];
 
@@ -454,7 +454,7 @@ const GuestName = () => {
     );
 
   return (
-    <div className="text-center flex flex-col items-center justify-center my-4">
+    <div className="text-center flex flex-col items-center justify-center mt-4">
       <p
         className="text-lg tracking-[0.1em] text-gray-600 font-medium"
         style={{ fontFamily: "var(--font-cormorant)" }}
@@ -472,8 +472,6 @@ const GuestName = () => {
         style={{ fontFamily: "var(--font-cormorant)" }}
       >
         Đến chung vui cùng gia đình chúng tôi
-        <br />
-        Vào lúc
       </p>
     </div>
   );
@@ -668,16 +666,17 @@ export default function WeddingInvitation() {
               <GuestName />
             </Suspense>
           </ScrollAnimation>
-          <div className="mt-2 space-y-6">
+          <div className="-mt-4 space-y-6">
             <ScrollAnimation animation="fadeDown" delay={200}>
               <div className="text-center">
                 <p
                   className="text-xl text-gray-700 leading-relaxed"
                   style={{ fontFamily: "var(--font-cormorant)" }}
                 >
-                  Chủ Nhật, 14.12.2025
-                  <br />
-                  Âm lịch 25/10 | 11:00 AM
+                    <img src="/patterm.png" className="w-1/5 flex justify-center mx-auto mt-4" alt="" />
+                    <span className="text-xl">Vào lúc 11 giờ 00 phút</span> - chủ nhật
+                    <p className="text-5xl pb-1">14.12.2025</p>
+                 Nhằm ngày 25 tháng 10 năm Ất Tị
                 </p>
               </div>
             </ScrollAnimation>

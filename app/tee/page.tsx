@@ -433,7 +433,16 @@ const MusicPlayer = () => {
 
 const GuestName = () => {
   const searchParams = useSearchParams();
-  const name = searchParams.get("name");
+  const nameParam = searchParams.get("name");
+  let name: string | null = null;
+  if (nameParam) {
+    try {
+      name = decodeURIComponent(nameParam);
+    } catch (e) {
+      // Nếu decode lỗi, sử dụng giá trị gốc
+      name = nameParam;
+    }
+  }
 
   if (!name)
     return (

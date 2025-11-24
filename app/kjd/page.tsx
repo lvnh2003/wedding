@@ -685,7 +685,7 @@ export default function WeddingInvitation() {
                     <img src="/patterm.png" className="w-1/5 flex justify-center mx-auto mt-4" alt="" />
                     <span className="text-xl">Vào lúc 11 giờ 00 phút</span> - thứ 7
                     <p className="text-5xl pb-1">27.12.2025</p>
-                 Nhằm ngày 08 tháng 11 năm Ất Tị
+                 Nhằm ngày 08 tháng 11 năm Ất Tỵ
                 </p>
               </div>
             </ScrollAnimation>

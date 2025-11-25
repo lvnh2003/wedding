@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     url: baseUrl,
     images: [
       {
-        url: `${baseUrl}/invitation-background.png`,
+        url: `${baseUrl}/sit-together.jpg`,
         width: 1200,
         height: 630,
         alt: 'Wedding Invitation - Kjd & Tee',
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Wedding Invitation 2025 - Kjd & Tee',
     description: 'You are invited to celebrate our special day',
-    images: [`${baseUrl}/invitation-background.png`],
+    images: [`${baseUrl}/sit-together.jpg`],
   },
 }
 

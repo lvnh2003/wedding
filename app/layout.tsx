@@ -21,55 +21,42 @@ const dancing = Dancing_Script({
   weight: ['400', '500', '600', '700']
 })
 
-export async function generateMetadata(): Promise<Metadata> {
-  let baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-  
-  if (!baseUrl) {
-    const vercelUrl = process.env.VERCEL_URL
-    if (vercelUrl) {
-      // VERCEL_URL không có protocol, cần thêm https://
-      baseUrl = vercelUrl.startsWith('http') ? vercelUrl : `https://${vercelUrl}`
-    } else {
-      // Fallback cho local development
-      baseUrl = 'http://localhost:3000'
-    }
-  }
+const baseUrl = 'https://kjd-n-tee.vercel.app';
 
-  return {
-    metadataBase: new URL(baseUrl),
+export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
+  title: 'Wedding Invitation 2025 - Kjd & Tee',
+  description: 'You are invited to celebrate our special day',
+  generator: 'v0.app',
+  icons: {
+    icon: [
+      {
+        url: '/web-icon.png',
+        media: '(prefers-color-scheme: light)',
+      },
+    ],
+    apple: '/apple-icon.png',
+  },
+  openGraph: {
     title: 'Wedding Invitation 2025 - Kjd & Tee',
     description: 'You are invited to celebrate our special day',
-    generator: 'v0.app',
-    icons: {
-      icon: [
-        {
-          url: '/web-icon.png',
-          media: '(prefers-color-scheme: light)',
-        },
-      ],
-      apple: '/apple-icon.png',
-    },
-    openGraph: {
-      title: 'Wedding Invitation 2025 - Kjd & Tee',
-      description: 'You are invited to celebrate our special day',
-      type: 'website',
-      url: baseUrl,
-      images: [
-        {
-          url: '/sit-together.png',
-          width: 1200,
-          height: 630,
-          alt: 'Wedding Invitation - Kjd & Tee',
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: 'Wedding Invitation 2025 - Kjd & Tee',
-      description: 'You are invited to celebrate our special day',
-      images: ['/sit-together.png'],
-    },
-  }
+    type: 'website',
+    url: baseUrl,
+    images: [
+      {
+        url: '/sit-together.png',
+        width: 1200,
+        height: 630,
+        alt: 'Wedding Invitation - Kjd & Tee',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Wedding Invitation 2025 - Kjd & Tee',
+    description: 'You are invited to celebrate our special day',
+    images: ['/sit-together.png'],
+  },
 }
 
 export default function RootLayout({

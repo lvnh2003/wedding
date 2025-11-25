@@ -34,6 +34,25 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+  openGraph: {
+    title: 'Wedding Invitation 2025 - Kjd & Tee',
+    description: 'You are invited to celebrate our special day',
+    type: 'website',
+    images: [
+      {
+        url: '/sit-together.png',
+        width: 1200,
+        height: 630,
+        alt: 'Wedding Invitation - Kjd & Tee',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Wedding Invitation 2025 - Kjd & Tee',
+    description: 'You are invited to celebrate our special day',
+    images: ['/sit-together.png'],
+  },
 }
 
 export default function RootLayout({

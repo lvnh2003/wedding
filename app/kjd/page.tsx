@@ -793,7 +793,7 @@ export default function WeddingInvitation() {
                     className="absolute right-[-20px] top-1/2 -translate-y-1/2 rotate-90 text-[20px] tracking-[0.6em] text-gray-700"
                     style={{ fontFamily: "var(--font-playfair)" }}
                   >
-                    14.12
+                    27.12
                   </p>
                 </div>
               </div>

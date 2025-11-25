@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     url: baseUrl,
     images: [
       {
-        url: '/sit-together.png',
+        url: 'https://kjd-n-tee.vercel.app/invitation-background.png',
         width: 1200,
         height: 630,
         alt: 'Wedding Invitation - Kjd & Tee',

@@ -42,11 +42,12 @@ export const metadata: Metadata = {
     description: 'You are invited to celebrate our special day',
     type: 'website',
     url: baseUrl,
+    siteName: 'Wedding Invitation',
+    locale: 'en_US',
     images: [
       {
         url: `${baseUrl}/sit-together.jpg`,
-        width: 1200,
-        height: 630,
+        secureUrl: `${baseUrl}/sit-together.jpg`,
         alt: 'Wedding Invitation - Kjd & Tee',
       },
     ],

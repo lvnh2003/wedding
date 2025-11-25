@@ -22,8 +22,18 @@ const dancing = Dancing_Script({
 })
 
 export async function generateMetadata(): Promise<Metadata> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://your-domain.vercel.app')
+  let baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+  
+  if (!baseUrl) {
+    const vercelUrl = process.env.VERCEL_URL
+    if (vercelUrl) {
+      // VERCEL_URL không có protocol, cần thêm https://
+      baseUrl = vercelUrl.startsWith('http') ? vercelUrl : `https://${vercelUrl}`
+    } else {
+      // Fallback cho local development
+      baseUrl = 'http://localhost:3000'
+    }
+  }
 
   return {
     metadataBase: new URL(baseUrl),
